@@ -1,5 +1,6 @@
 # Producer Consumer Database Insert 
 
+
 ## Design Goals
 
 The following patterns were used: Producer-Consumer, Strategy, Factory Pattern, and Poison Pill.
@@ -22,6 +23,10 @@ BluetoothInsert, HeartRateInsert)
 The consumer executes the InsertSql strategy and commits the results to the database.
 If the Consumer pulls a Poison Pill, the thread shuts down.
 
-The Driver class used the Facade design pattern to tie together all the business
+The Driver class uses the Facade design pattern to tie together all the business
 logic. The Driver class initializes Producer and Consumers. A parameter
 passed in the main class determines how many Consumer threads to create
+
+## UML Diagram
+
+![Image of UML Diagram](producer_consumer_dbinsert_uml.png)
