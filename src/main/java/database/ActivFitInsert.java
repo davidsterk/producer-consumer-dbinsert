@@ -14,12 +14,12 @@ import java.sql.SQLException;
 
 public class ActivFitInsert extends SensorTypeInsert implements SqlInsertStrategy {
 
-  public static final String insertStmt = "INSERT INTO activfit(sensorname, "
-          + "starttime, endtime, activity, duration) Values (?, ?, ?, ?, ?)";
-
   private JSONParser parser = new JSONParser();
   public ActivFitInsert(Connection conn, Task task) throws SQLException {
     super(conn, task);
+    super.insertStmt = "INSERT INTO activfit(sensorname, "
+            + "starttime, endtime, activity, duration) Values (?, ?, ?, ?, ?)";
+    super.setPrepareStatement();
   }
 
   /*
@@ -37,11 +37,4 @@ public class ActivFitInsert extends SensorTypeInsert implements SqlInsertStrateg
     super.pstmt.execute();
   }
 
-  /*
-  Sets the insert statement to the Table specific one
-   */
-  @Override
-  protected PreparedStatement prepareStatement() throws SQLException {
-    return super.conn.prepareStatement(insertStmt);
-  }
 }

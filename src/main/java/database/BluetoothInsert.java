@@ -14,12 +14,12 @@ import java.sql.SQLException;
 
 public class BluetoothInsert extends SensorTypeInsert implements SqlInsertStrategy {
 
-  public static final String insertStmt = "INSERT INTO bluetooth (sensorname, "
-          + "timestamp, state) Values (?, ?, ?)";
-
   private JSONParser parser = new JSONParser();
   public BluetoothInsert(Connection conn, Task task) throws SQLException {
     super(conn, task);
+    super.insertStmt = "INSERT INTO bluetooth (sensorname, "
+            + "timestamp, state) Values (?, ?, ?)";
+    super.setPrepareStatement();
   }
 
   /*
@@ -35,11 +35,4 @@ Implements the SqlInsertStrategy. Creates the VAlUES part of the insert statemen
     super.pstmt.execute();
   }
 
-  /*
-Sets the insert statement to the Table specific one
-*/
-  @Override
-  protected PreparedStatement prepareStatement() throws SQLException {
-    return super.conn.prepareStatement(insertStmt);
-  }
 }

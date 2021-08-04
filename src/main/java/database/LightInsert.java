@@ -14,13 +14,13 @@ import java.sql.SQLException;
 
 public class LightInsert extends SensorTypeInsert implements SqlInsertStrategy {
 
-  public static final String insertStmt = "INSERT INTO lightsensor (sensorname, "
-          + "timestamp, lux) Values (?, ?, ?)";
-
-
   private JSONParser parser = new JSONParser();
   public LightInsert(Connection conn, Task task) throws SQLException {
     super(conn, task);
+    super.insertStmt = "INSERT INTO lightsensor (sensorname, "
+            + "timestamp, lux) Values (?, ?, ?)";
+    super.setPrepareStatement();
+
   }
 
   /*
@@ -32,13 +32,8 @@ Implements the SqlInsertStrategy. Creates the VAlUES part of the insert statemen
     super.pstmt.setString(1, json.get("sensor_name").toString());
     super.pstmt.setString(2, json.get("timestamp").toString());
     super.pstmt.setString(3, ((JSONObject) json.get("sensor_data")).get("lux").toString());
+
     super.pstmt.execute();
   }
-  /*
-Implements the SqlInsertStrategy. Creates the VAlUES part of the insert statement
-*/
-  @Override
-  protected PreparedStatement prepareStatement() throws SQLException {
-    return super.conn.prepareStatement(insertStmt);
-  }
+
 }

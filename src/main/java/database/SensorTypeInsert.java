@@ -15,6 +15,7 @@ public abstract class SensorTypeInsert {
   protected Connection conn;
   protected PreparedStatement pstmt;
   protected Task task;
+  protected String insertStmt;
 
   /*
   Constructor. Sets Connection and Task objects. Executes the PreparedStatment method.
@@ -22,11 +23,10 @@ public abstract class SensorTypeInsert {
   public SensorTypeInsert(Connection conn, Task task) throws SQLException {
     this.conn = conn;
     this.task = task;
-    pstmt = prepareStatement();
   }
 
-  /*
-  Create the insert statement. Overridden by parent class;
-   */
-   protected abstract PreparedStatement prepareStatement() throws SQLException;
+ /* Sets the insert statement to the Table specific one */
+  protected void setPrepareStatement() throws SQLException {
+    pstmt = conn.prepareStatement(insertStmt);
+  }
 }
