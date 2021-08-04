@@ -45,3 +45,6 @@ target/
 # properties file
 connection.prop
 
+# input files
+input/input.txt
+
