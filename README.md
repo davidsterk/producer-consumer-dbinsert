@@ -1,15 +1,10 @@
 # Producer Consumer Database Insert 
 
-
-## Design Goals
-
-The following patterns were used: Producer-Consumer, Strategy, Factory Pattern, and Poison Pill.
-
 This program uses a producer and consumer framework to insert json data into different Mysql tables
 The json data is sensor data collected from a smart watch for sensor types such as
 activity, activfit, battery, lightsensor, heartrate, and bluetooth. Each sensor type is its own sql table.
 
-The program works as followed. A producer class implements Runnable. Reads the input file, line by line. 
+The program works as follows: A producer class implements Runnable. Reads the input file, line by line. 
 For each json object, the producer reads the sensor type. The producer creates a Task object and assigns the
 SensorType Enum based on the sensor type in the json. The json object is passed in into the task as well.
 The producer puts the Task into a BlockingQueue. Once all the records are read,
