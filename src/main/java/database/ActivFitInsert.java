@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 public class ActivFitInsert extends SensorTypeInsert implements SqlInsertStrategy {
 
-  public static final String ACTIVITY_FIT_TABLE_INSERT = "INSERT INTO activfit(sensorname, "
+  public static final String insertStmt = "INSERT INTO activfit(sensorname, "
           + "starttime, endtime, activity, duration) Values (?, ?, ?, ?, ?)";
 
   private JSONParser parser = new JSONParser();
@@ -42,6 +42,6 @@ public class ActivFitInsert extends SensorTypeInsert implements SqlInsertStrateg
    */
   @Override
   protected PreparedStatement prepareStatement() throws SQLException {
-    return super.conn.prepareStatement(ACTIVITY_FIT_TABLE_INSERT);
+    return super.conn.prepareStatement(insertStmt);
   }
 }

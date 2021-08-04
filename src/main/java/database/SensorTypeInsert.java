@@ -26,7 +26,7 @@ public abstract class SensorTypeInsert {
   }
 
   /*
-  Create the insert statement. Overriden by parrent class;
+  Create the insert statement. Overridden by parent class;
    */
    protected abstract PreparedStatement prepareStatement() throws SQLException;
 }

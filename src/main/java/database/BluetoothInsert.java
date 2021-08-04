@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 public class BluetoothInsert extends SensorTypeInsert implements SqlInsertStrategy {
 
-  public static final String BLUETOOTH_INSERT = "INSERT INTO bluetooth (sensorname, "
+  public static final String insertStmt = "INSERT INTO bluetooth (sensorname, "
           + "timestamp, state) Values (?, ?, ?)";
 
   private JSONParser parser = new JSONParser();
@@ -40,6 +40,6 @@ Sets the insert statement to the Table specific one
 */
   @Override
   protected PreparedStatement prepareStatement() throws SQLException {
-    return super.conn.prepareStatement(BLUETOOTH_INSERT);
+    return super.conn.prepareStatement(insertStmt);
   }
 }

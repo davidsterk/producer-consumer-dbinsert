@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 public class BatteryInsert extends SensorTypeInsert implements SqlInsertStrategy {
 
-  public static final String BATTERY_TABLE_INSERT = "INSERT INTO batterysensor (sensorname, "
+  public static final String insertStmt = "INSERT INTO batterysensor (sensorname, "
           + "timestamp, percent, charging) Values (?, ?, ? , ?)";
 
   private JSONParser parser = new JSONParser();
@@ -41,6 +41,6 @@ Sets the insert statement to the Table specific one
  */
   @Override
   protected PreparedStatement prepareStatement() throws SQLException {
-    return super.conn.prepareStatement(BATTERY_TABLE_INSERT);
+    return super.conn.prepareStatement(insertStmt);
   }
 }

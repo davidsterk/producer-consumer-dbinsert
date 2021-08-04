@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 public class LightInsert extends SensorTypeInsert implements SqlInsertStrategy {
 
-  public static final String LIGHT_TABLE_INSERT = "INSERT INTO lightsensor (sensorname, "
+  public static final String insertStmt = "INSERT INTO lightsensor (sensorname, "
           + "timestamp, lux) Values (?, ?, ?)";
 
 
@@ -39,6 +39,6 @@ Implements the SqlInsertStrategy. Creates the VAlUES part of the insert statemen
 */
   @Override
   protected PreparedStatement prepareStatement() throws SQLException {
-    return super.conn.prepareStatement(LIGHT_TABLE_INSERT);
+    return super.conn.prepareStatement(insertStmt);
   }
 }
