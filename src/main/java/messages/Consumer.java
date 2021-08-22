@@ -15,7 +15,6 @@ public class Consumer implements Runnable, SqlInsertStrategy {
   private Connection conn;
   private SqlInsertStrategy insert;
   private BlockingQueue<Task> taskQueue;
-  private Task task;
   private StrategyFactory factory;
 
 
@@ -37,7 +36,7 @@ public class Consumer implements Runnable, SqlInsertStrategy {
       try {
         Task task = taskQueue.take();
         if(task.getType().equals(SensorType.POISON_PILL)) {
-          System.out.println(Thread.currentThread().getName() + " - Poison Pill Recieved - Exiting...");
+          System.out.println(Thread.currentThread().getName() + " - Poison Pill Received - Exiting...");
           conn.close();
           Thread.currentThread().interrupt();
           return;
