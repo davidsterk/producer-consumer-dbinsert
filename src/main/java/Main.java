@@ -2,18 +2,17 @@
  * Description: Class Main. Entry Point
  */
 
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import java.sql.SQLException;
 
 
 public class Main {
 
-  private static Logger logger = Logger.getLogger(Main.class);
-
+  private static Logger logger = LogManager.getLogger(Main.class);
 
   /**
-   * A main method to run examples.
+   * Main method to execute program.
    *
    * @param args not used
    */
@@ -34,12 +33,9 @@ public class Main {
 
     }
 
-    System.out.println("Creating " + threads + " Consumer(s)...");
+    logger.info("Creating " + threads + " Consumer(s)...");
     Driver run = new Driver(threads);
     run.run();
 
   }
-
-
-
 }

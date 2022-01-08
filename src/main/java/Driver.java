@@ -5,13 +5,15 @@
 import messages.Consumer;
 import messages.Producer;
 import messages.Task;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public class Driver {
+  private Logger logger = LogManager.getLogger(this.getClass());
   private int threads;
   BlockingQueue<Task> blockingQueue;
   ArrayList<Thread> threadList;
@@ -30,8 +32,9 @@ public class Driver {
   executes the producer and consumer threads
    */
   public void run() throws SQLException, InterruptedException {
-    System.out.println("Running");
+    logger.info("Starting Producer");
     producer.start();
+    logger.info("Starting Consumer threads: " + threads);
     createConsumers(threads);
     startConsumers();
   }

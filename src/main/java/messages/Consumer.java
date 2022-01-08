@@ -7,11 +7,16 @@ package messages;
 
 import database.*;
 import enums.SensorType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.concurrent.BlockingQueue;
 
 public class Consumer implements Runnable, SqlInsertStrategy {
+  private Logger logger = LogManager.getLogger(this.getClass());
+
   private Connection conn;
   private SqlInsertStrategy insert;
   private BlockingQueue<Task> taskQueue;
@@ -36,7 +41,7 @@ public class Consumer implements Runnable, SqlInsertStrategy {
       try {
         Task task = taskQueue.take();
         if(task.getType().equals(SensorType.POISON_PILL)) {
-          System.out.println(Thread.currentThread().getName() + " - Poison Pill Received - Exiting...");
+          logger.info(Thread.currentThread().getName() + " - Poison Pill Received - Exiting...");
           conn.close();
           Thread.currentThread().interrupt();
           return;
@@ -44,7 +49,7 @@ public class Consumer implements Runnable, SqlInsertStrategy {
         insert = factory.createStatement(conn, task);
         insertSQL();
         conn.commit();
-        System.out.println(Thread.currentThread().getName() + " Inserted into " + task.getType() + " " +
+        logger.info(Thread.currentThread().getName() + " Inserted into " + task.getType() + " " +
                 task.getMessage());
       } catch (InterruptedException | SQLException e) {
         try {
