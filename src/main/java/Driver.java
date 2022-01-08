@@ -55,6 +55,7 @@ starts consumer threads
   private void startConsumers() {
     for(Thread thread : threadList) {
       thread.start();
+      logger.info("Starting thread: " + thread.getName());
     }
   }
 

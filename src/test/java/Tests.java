@@ -9,7 +9,6 @@ import database.SqlInsertFactory;
 import database.SqlInsertStrategy;
 import database.StrategyFactory;
 import enums.SensorType;
-import messages.Consumer;
 import messages.Producer;
 import messages.Task;
 import org.junit.Test;
@@ -21,22 +20,32 @@ public class Tests {
   public void testConnection() throws SQLException {
     Connection conn = MySqlConnector.getConnection();
     conn.close();
+    assertNotNull(conn);
   }
 
   @Test
-  public void testTask() throws SQLException {
-    StrategyFactory  factory = new SqlInsertFactory();
-    Connection conn = MySqlConnector.getConnection();
+  public void testTask() {
     Task task = new Task(SensorType.ACTIVITY, null);
     assertEquals(SensorType.ACTIVITY, task.getType());
   }
 
   @Test
-  public void testProcess() throws SQLException {
+  public void testProducerProcess() throws InterruptedException {
     BlockingQueue<Task>  blockingQueue = new LinkedBlockingDeque<>();
     Thread producer = new Thread(new Producer(blockingQueue, "test.txt", 1));
-    Thread consumer = new Thread(new Consumer(blockingQueue));
     producer.start();
-    consumer.start();
+    producer.join();
+    //3 objects in queue expected: 2 from test file + poison pill
+    int expectedLength=3;
+    assertEquals(expectedLength, blockingQueue.size());
+  }
+
+  @Test
+  public void testStrategy() throws SQLException {
+    Connection conn = MySqlConnector.getConnection();
+    Task task = new Task(SensorType.BATTERY, null);
+    StrategyFactory factory = new SqlInsertFactory();
+    SqlInsertStrategy insert = factory.createStatement(conn, task);
+    assertEquals("BatteryInsert", insert.getClass().getSimpleName());
   }
 }
