@@ -15,12 +15,12 @@ import java.sql.SQLException;
 import java.util.concurrent.BlockingQueue;
 
 public class Consumer implements Runnable, SqlInsertStrategy {
-  private Logger logger = LogManager.getLogger(this.getClass());
+  private final Logger logger = LogManager.getLogger(this.getClass());
 
-  private Connection conn;
+  private final Connection conn;
   private SqlInsertStrategy insert;
-  private BlockingQueue<Task> taskQueue;
-  private StrategyFactory factory;
+  private final BlockingQueue<Task> taskQueue;
+  private final StrategyFactory factory;
 
 
   public Consumer(BlockingQueue<Task> taskQueue) throws SQLException {
@@ -55,8 +55,8 @@ public class Consumer implements Runnable, SqlInsertStrategy {
         try {
           conn.close();
           Thread.currentThread().interrupt();
-        } catch (SQLException throwables) {
-          throwables.printStackTrace();
+        } catch (SQLException throwable) {
+          logger.error(throwable.getMessage());
         }
       }
     }

@@ -7,6 +7,8 @@
 package messages;
 
 import enums.SensorType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -15,11 +17,11 @@ import java.util.concurrent.BlockingQueue;
 
 public class Producer implements Runnable{
 
+  private final Logger logger = LogManager.getLogger(this.getClass());
   BlockingQueue<Task> taskQueue;
-  private JSONParser parser = new JSONParser();
-  private File inputFile;
-  private BufferedReader br;
-  private int threadCount;
+  private final JSONParser parser = new JSONParser();
+  private final File inputFile;
+    private final int threadCount;
   public Producer(BlockingQueue<Task>  taskQueue, String fileName, int threadCount) {
     inputFile = new File("input//"+fileName);
     this.taskQueue = taskQueue;
@@ -32,18 +34,18 @@ Opens the file and creates a Task object for each line. Tasks are put in the que
   public void produce() {
     try {
 
-          br = new BufferedReader(new FileReader(inputFile));
+        BufferedReader br = new BufferedReader(new FileReader(inputFile));
           String output;
           while((output = br.readLine()) != null) {
             output = output.trim();
             try {
-              if(!output.equals("")){
+              if(!output.isEmpty()){
                 JSONObject json  = (JSONObject) parser.parse(output);
                 Task task = new Task(SensorType.getSensorType(json.get("sensor_name").toString().toLowerCase()), json);
                 taskQueue.put(task);
               }
             } catch (Exception ex) {
-              ex.printStackTrace();
+              logger.error("Error parsing JSON: " + ex.getMessage());
               Thread.currentThread().interrupt();
               System.exit(1);
             }
@@ -51,7 +53,7 @@ Opens the file and creates a Task object for each line. Tasks are put in the que
           br.close();
           createPoisonPill();
     } catch (IOException | InterruptedException e) {
-      e.printStackTrace();
+      logger.error("Error reading file: " + e.getMessage());
     }
 
   }

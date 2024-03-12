@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 public class HeartRateInsert extends SensorTypeInsert implements SqlInsertStrategy {
 
-  private JSONParser parser = new JSONParser();
+  private final JSONParser parser = new JSONParser();
   public HeartRateInsert(Connection conn, Task task) throws SQLException {
     super(conn, task);
     super.insertStmt = "INSERT INTO heartrate (sensorname, "

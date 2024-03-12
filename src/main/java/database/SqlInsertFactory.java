@@ -9,14 +9,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class SqlInsertFactory implements StrategyFactory {
-  private SqlInsertStrategy insert;
 
-  /*
-  Returns a SqlInsertStrategy sublcass
-   */
+    /*
+    Returns a SqlInsertStrategy sublcass
+     */
   @Override
   public SqlInsertStrategy createStatement(Connection conn, Task task) throws SQLException {
-    switch(task.getType()) {
+      SqlInsertStrategy insert;
+      switch(task.getType()) {
       case ACTIVITY:
         insert = new ActivityInsert(conn, task);
         break;

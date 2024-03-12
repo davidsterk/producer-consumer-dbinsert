@@ -10,8 +10,8 @@ import org.json.simple.JSONObject;
 
 public class Task {
 
-  private JSONObject message;
-  private SensorType sensorType;
+  private final JSONObject message;
+  private final SensorType sensorType;
 
   public Task(SensorType sensorType, JSONObject message) {
     this.sensorType = sensorType;

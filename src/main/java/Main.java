@@ -2,6 +2,7 @@
  * Description: Class Main. Entry Point
  */
 
+import org.apache.commons.cli.*;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import java.sql.SQLException;
@@ -9,33 +10,46 @@ import java.sql.SQLException;
 
 public class Main {
 
-  private static Logger logger = LogManager.getLogger(Main.class);
+  private static final Logger LOGGER = LogManager.getLogger(Main.class);
 
   /**
    * Main method to execute program.
    *
    * @param args not used
    */
-  /*
-  First parameter argument is # of Consumer threads Default = 10;
-   */
   public static void main(String[] args) throws SQLException, InterruptedException {
+      Options options = new Options();
 
-    // This configuration is for setting up the log4j properties file.
-    // It is better to set this using java program arguments.
-    // PropertyConfigurator.configure("log4j.properties");
+      Option threadsOption = new Option("t", "threads", true, "number of threads, default is 10");
+      threadsOption.setRequired(false);
+      options.addOption(threadsOption);
 
-    // Let us create an object of the Main class.
-    int threads = 10;
-    if(args.length == 1) {
-      threads = Integer.parseInt(args[0]);
-      Driver run = new Driver(threads);
+      Option inputOption = new Option("i", "input", true,
+              "input file path, default is current directory input.txt");
+      inputOption.setRequired(false);
+      options.addOption(inputOption);
 
-    }
+      CommandLineParser parser = new DefaultParser();
+      HelpFormatter formatter = new HelpFormatter();
+      CommandLine cmd;
 
-    logger.info("Creating " + threads + " Consumer(s)...");
-    Driver run = new Driver(threads);
-    run.run();
+      try {
+          cmd = parser.parse(options, args);
+      } catch (ParseException e) {
+          LOGGER.error(e.getMessage());
+          formatter.printHelp("utility-name", options);
 
+          System.exit(1);
+          return;
+      }
+
+      int threads = Integer.parseInt(cmd.getOptionValue("threads", "10"));
+      String inputFilePath = cmd.getOptionValue("input", "input.txt");
+
+      LOGGER.info("Creating " + threads + " Consumer(s)...");
+      LOGGER.info("Reading from file: " + inputFilePath);
+
+      Driver run = new Driver(threads, inputFilePath);
+      run.run();
   }
 }
