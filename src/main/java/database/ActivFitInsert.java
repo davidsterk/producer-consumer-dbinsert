@@ -6,14 +6,11 @@ package database;
 
 import messages.Task;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class ActivFitInsert extends SensorTypeInsert implements SqlInsertStrategy {
 
-  private final JSONParser parser = new JSONParser();
   public ActivFitInsert(Connection conn, Task task) throws SQLException {
     super(conn, task);
     super.insertStmt = "INSERT INTO activfit(sensorname, "
