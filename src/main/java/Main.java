@@ -17,7 +17,7 @@ public class Main {
    *
    * @param args not used
    */
-  public static void main(String[] args) throws SQLException, InterruptedException {
+  public static void main(String[] args) throws SQLException {
       Options options = new Options();
 
       Option threadsOption = new Option("t", "threads", true, "number of threads, default is 10");
@@ -29,6 +29,10 @@ public class Main {
       inputOption.setRequired(false);
       options.addOption(inputOption);
 
+      Option helpOption = new Option("h", "help", false, "Display arguments");
+      helpOption.setRequired(false);
+      options.addOption(helpOption);
+
       CommandLineParser parser = new DefaultParser();
       HelpFormatter formatter = new HelpFormatter();
       CommandLine cmd;
@@ -37,9 +41,14 @@ public class Main {
           cmd = parser.parse(options, args);
       } catch (ParseException e) {
           LOGGER.error(e.getMessage());
-          formatter.printHelp("utility-name", options);
-
+          formatter.printHelp("producer-consumer-dbinsert", options);
           System.exit(1);
+          return;
+      }
+
+      // Check if --help is present
+      if (cmd.hasOption("help")) {
+          formatter.printHelp("producer-consumer-dbinsert", options);
           return;
       }
 
